@@ -1,0 +1,8 @@
+## Interface: 120001
+## Interface-Classic: 11508
+## Title: Combat Tracker
+## Notes: A minimal Combat Tracker addon
+## Author: Beforeguard
+## Version: 1.0.0
+
+CombatTracker.lua

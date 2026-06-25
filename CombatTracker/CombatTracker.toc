@@ -5,4 +5,5 @@
 ## Author: Beforeguard
 ## Version: 1.0.0
 
-CombatTracker.lua
+Core.lua
+Events.lua

@@ -19,6 +19,8 @@ function CombatTracker.LogSummary()
             fight.kills
         )
     )
+    CombatTracker:LogMessage(
+        string.format("Total fights this session: %d", CombatTracker.session.totalFights))
 end
 
 function CombatTracker:StartCombat()
@@ -46,8 +48,9 @@ function CombatTracker:EndCombat()
 
     self.inCombat = false
 
-    self.currentFight.duration =
-        GetTime() - self.currentFight.startTime
+    self.currentFight.duration = GetTime() - self.currentFight.startTime
+
+    CombatTracker.session.totalFights = CombatTracker.session.totalFights + 1
 
     self:LogSummary()
     self:LogMessage("Combat ended")

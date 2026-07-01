@@ -31,6 +31,35 @@ function CombatTracker:EndCombat()
     self:LogMessage("Combat ended")
 end
 
+function CombatTracker:RecordDeath(destGUID)
+    local playerGUID = UnitGUID("player")
+    if destGUID == playerGUID then
+        self.currentFight.deaths = self.currentFight.deaths + 1
+    end
+end
+
+function CombatTracker:RecordKill(sourceGUID)
+    local playerGUID = UnitGUID("player")
+    if sourceGUID == playerGUID then
+        self.currentFight.kills = self.currentFight.kills + 1
+    end
+end
+
+function CombatTracker:AddDamage(sourceGUID, amount)
+    local playerGUID = UnitGUID("player")
+    if sourceGUID == playerGUID and amount then
+        self.currentFight.damage = self.currentFight.damage + amount
+    end
+end
+
+function CombatTracker:AddHealing(sourceGUID, amount)
+    local playerGUID = UnitGUID("player")
+    if sourceGUID == playerGUID and amount then
+        self.currentFight.healing = self.currentFight.healing + amount
+    end
+end
+
+-- Main handler (parses once, routes to specialists)
 function CombatTracker:HandleCombatLogEvent(...)
     if not self.currentFight then
         return
@@ -39,33 +68,13 @@ function CombatTracker:HandleCombatLogEvent(...)
     local _, subevent, _, sourceGUID, _, _, _, destGUID, _, _, _, _, _, _, amount =
         CombatLogGetCurrentEventInfo()
 
-    local playerGUID = UnitGUID("player")
-
     if subevent == "UNIT_DIED" then
-        if destGUID == playerGUID then
-            self.currentFight.deaths = self.currentFight.deaths + 1
-        end
-        return
-    end
-
-    if subevent == "PARTY_KILL" then
-        if sourceGUID == playerGUID then
-            self.currentFight.kills = self.currentFight.kills + 1
-        end
-        return
-    end
-
-    if sourceGUID ~= playerGUID or not amount then
-        return
-    end
-
-    local statByEvent = {
-        SPELL_DAMAGE = "damage",
-        SPELL_HEAL = "healing",
-    }
-
-    local stat = statByEvent[subevent]
-    if stat then
-        self.currentFight[stat] = self.currentFight[stat] + amount
+        self:RecordDeath(destGUID)
+    elseif subevent == "PARTY_KILL" then
+        self:RecordKill(sourceGUID)
+    elseif subevent == "SPELL_DAMAGE" then
+        self:AddDamage(sourceGUID, amount)
+    elseif subevent == "SPELL_HEAL" then
+        self:AddHealing(sourceGUID, amount)
     end
 end

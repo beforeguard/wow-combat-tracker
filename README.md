@@ -1,15 +1,18 @@
 # Combat Tracker
 
-A lightweight World of Warcraft addon that tracks and logs combat state changes in real-time.
+A lightweight World of Warcraft addon that tracks combat statistics and provides detailed fight analysis.
 
 ## Description
 
-Combat Tracker is a minimal addon that monitors when you enter and exit combat, providing clear chat notifications for combat state changes. Perfect for players who want to be more aware of their combat status or developers who need a foundation for combat-related addons.
+Combat Tracker monitors your combat encounters and records detailed statistics for each fight. It tracks damage dealt, healing done, deaths, kills, and combat duration, giving you insight into your combat performance throughout your play session.
 
 ## Features
 
 - 🎯 **Real-time Combat Detection**: Instantly notifies when entering or leaving combat
+- 📊 **Detailed Combat Statistics**: Tracks damage, healing, kills, deaths, and duration for each fight
+- 📈 **Session Analytics**: View aggregate statistics across all fights in your session
 - 💬 **Chat Notifications**: Clean, color-coded messages in your chat window
+- ⌨️ **Slash Commands**: Easy access to session statistics via `/ct` commands
 - 🎮 **Multi-Version Support**: Compatible with both Retail and Classic WoW
 - ⚡ **Lightweight**: Minimal performance impact with efficient event handling
 
@@ -26,13 +29,34 @@ Combat Tracker is a minimal addon that monitors when you enter and exit combat, 
 
 ## Usage
 
-The addon works automatically once installed. You'll see the following messages:
+### Automatic Fight Tracking
 
-- **On Login/Reload**: `[Combat Tracker] Addon files loaded.` (in green)
-- **Entering Combat**: `[Combat Tracker] Entered combat.` (in green)
-- **Leaving Combat**: `[Combat Tracker] Left combat.` (in green)
+The addon works automatically once installed. After each combat encounter, you'll see a summary:
 
-No commands or configuration needed—it just works!
+- **On Login/Reload**: `[Combat Tracker] Addon files loaded.`
+- **Combat Start**: `[Combat Tracker] Combat started`
+- **Combat End**: Individual fight statistics including duration, damage, healing, deaths, and kills
+
+### Slash Commands
+
+- `/ct` - Display available commands
+- `/ct sessionstats` - Show aggregate statistics for all fights in the current session
+
+### Combat Statistics Tracked
+
+Each fight records:
+- **Duration**: How long the combat lasted (in seconds)
+- **Damage**: Total damage you dealt during the fight
+- **Healing**: Total healing you performed during the fight
+- **Deaths**: Number of times you died
+- **Kills**: Number of enemies you killed
+
+### Session Summary
+
+Use `/ct sessionstats` to view:
+- Total number of fights
+- Cumulative totals for damage, healing, deaths, and kills
+- Average damage, healing, and duration per fight
 
 ## Compatibility
 
@@ -45,7 +69,10 @@ No commands or configuration needed—it just works!
 
 ```
 CombatTracker/
-├── CombatTracker.lua  # Main addon logic
+├── Core.lua           # Core initialization and logging functions
+├── Events.lua         # Event registration and handling
+├── Combat.lua         # Combat tracking and statistics logic
+├── Commands.lua       # Slash command handling
 └── CombatTracker.toc  # Addon metadata
 ```
 
@@ -54,15 +81,24 @@ CombatTracker/
 - `ADDON_LOADED` - Fires when the addon is loaded
 - `PLAYER_REGEN_DISABLED` - Fires when entering combat
 - `PLAYER_REGEN_ENABLED` - Fires when leaving combat
+- `COMBAT_LOG_EVENT_UNFILTERED` - Fires for all combat log events (used to track damage, healing, deaths, and kills)
+
+### Architecture
+
+The addon uses a modular architecture:
+- **Core.lua**: Defines the main `CombatTracker` table, session data structure, and logging functions (`LogMessage`, `LogCurrentFight`, `LogSessionStats`, `LogSummary`)
+- **Events.lua**: Registers WoW events and routes them to appropriate handler functions
+- **Combat.lua**: Implements combat logic including `StartCombat`, `EndCombat`, and `HandleCombatLogEvent`
+- **Commands.lua**: Defines slash commands for user interaction
 
 ## Future Enhancements
 
 Potential features for future versions:
-- Combat duration tracking
-- Combat statistics (time in combat, number of engagements)
+- SavedVariables for persistent data across sessions
 - Configurable notification styles
-- SavedVariables for persistent data
-- Slash commands for configuration
+- More detailed combat log analysis (specific abilities, targets)
+- Export functionality for fight data
+- Graphical UI for statistics viewing
 
 ## Author
 

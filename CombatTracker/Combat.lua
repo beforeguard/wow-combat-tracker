@@ -27,7 +27,7 @@ function CombatTracker:EndCombat()
         self.currentFight
     )
 
-    self:LogSummary()
+    self:LogCurrentFight()
     self:LogMessage("Combat ended")
 end
 

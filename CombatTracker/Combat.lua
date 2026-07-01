@@ -24,7 +24,6 @@ function CombatTracker.LogSummary()
 end
 
 function CombatTracker:StartCombat()
-
     self.inCombat = true
 
     self.currentFight = {
@@ -39,9 +38,7 @@ function CombatTracker:StartCombat()
     self:LogMessage("Combat started")
 end
 
-
 function CombatTracker:EndCombat()
-
     if not self.inCombat then
         return
     end

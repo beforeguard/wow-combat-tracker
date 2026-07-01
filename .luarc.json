@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "Lua 5.1",
+  "diagnostics.globals": [
+    "CreateFrame",
+    "GetTime",
+    "UnitGUID",
+    "CombatLogGetCurrentEventInfo",
+    "SlashCmdList",
+    "SLASH_COMBATTRACKER1",
+    "arg1",
+    "print"
+  ],
+  "workspace.ignoreDir": [
+    ".vscode"
+  ]
+}

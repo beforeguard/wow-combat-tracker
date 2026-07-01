@@ -31,7 +31,7 @@ function CombatTracker:EndCombat()
     self:LogMessage("Combat ended")
 end
 
-function CombatTracker:HandleCombatLogEvent()
+function CombatTracker:HandleCombatLogEvent(...)
     if not self.currentFight then
         return
     end
